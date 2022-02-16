@@ -16,10 +16,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EmailPasswordActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private FirebaseDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,7 @@ public class EmailPasswordActivity extends AppCompatActivity {
         Button register = findViewById(R.id.login);
 
         auth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
 
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +70,13 @@ public class EmailPasswordActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = auth.getCurrentUser();
+
+                            // Creating the user info to update database
+                            ArrayList<String> movies = new ArrayList<>();
+                            movies.add("Batman");
+                            User newUser = new User(movies ,user.getEmail());
+                            database.getReference("users/").child(user.getUid()).setValue(newUser);
+
                             Toast.makeText(EmailPasswordActivity.this, "Authentication success!",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(user);

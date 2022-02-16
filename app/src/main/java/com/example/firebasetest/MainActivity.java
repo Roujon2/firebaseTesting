@@ -67,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         String userId1 = "42";
-        String username1 = "juamtrix";
+        ArrayList<String> username1 = new ArrayList<>();
+        username1.add("a");
 
         String userId2 = "12";
-        String username2 = "jonny";
+        ArrayList<String> username2 = new ArrayList<>();
+        username2.add("b");
 
         User user1 = new User(username1, "asdf");
         User user2 = new User(username2, "gmail");
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ArrayList<String> userList = new ArrayList<>();
                 for(DataSnapshot ds: snapshot.getChildren()){
-                    String user = ds.child("username").getValue(String.class);
+                    String user = ds.child("email").getValue(String.class);
                     userList.add(user);
                 }
                 String users = "";
